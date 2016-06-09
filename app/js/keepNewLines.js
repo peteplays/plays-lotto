@@ -1,6 +1,6 @@
 // @ngInject
 module.exports = ['$sce', function ($sce) {
-	 return function(val) {
-        return $sce.trustAsHtml(val.replace(/\n/g, "<br>"));
+	return function(val) {
+    	return $sce.trustAsHtml(val.replace(/\n/g, "<br>"));
     };
 }];

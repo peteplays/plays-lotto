@@ -27,9 +27,48 @@ Start the build
 
 ## How to run the app locally
 
+Edit the following files `www/index.html` & `app/js/main.js` & `app/css/main.less`
+
 `npm run dev` will execute `gulp` and start a server at `localhost:1337`
 
 Open multiple tabs to see how multiple users can submit their estimations and view the results.
+
+
+## App Structure
+```
+├───┬ app/
+|   ├───┬ css/
+|   |   ├── main.less
+|   |   └── slider.less
+|   ├───┬ js/
+|   |   ├── keepNewLines.js
+|   |   ├── main.js
+|   |   └── socketservice.js
+|   ├── app.js
+|   └── app.less
+├───┬ resources/
+|   ├───┬ images/
+|   |   ├── cross-scratches.png
+|   |   ├── fabric-of-squares.png
+|   |   ├── favicon.ico
+|   |   └── playslogo.png
+|   ├───┬ socketio/
+|   |   └── main.js
+├───┬ www/
+|   ├───┬ css/
+|   |   ├── bundle.css
+|   |   └── bundle.min.css
+|   ├───┬ fonts/
+|   ├───┬ js/
+|   |   ├── bundle.js
+|   |   └── bundle.min.js
+|   └── index.html
+├── gulpfile.js
+├── package.json
+├── Procfile
+├── README.md
+└── server.js
+```
 
 ## How to deploy the app
 

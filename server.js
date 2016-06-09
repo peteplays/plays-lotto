@@ -1,6 +1,6 @@
 var express = require('express'),
     app     = express(),
-    favicon     = require('serve-favicon'),
+    favicon = require('serve-favicon'),
     server  = require('http').createServer(app),
     io      = require('socket.io').listen(server),
     port    = process.env.PORT || 1337;
