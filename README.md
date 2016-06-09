@@ -1,6 +1,6 @@
 # Plays Lotto
 
-An app that will allow a software development team to play Planning Poker
+This app allows a software development team to play [Planning Poker](http://en.wikipedia.org/wiki/Planning_poker)
 
 
 ## Description
