@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="playsLotto">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Plays Lotto</title>
+
+  <link rel="stylesheet" href="css/bundle.min.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/bundle.min.js"></script>
+</head>
+<body ng-controller="main">
+ 
+  <!--  display users & give up power -->
+  <div class="row current-users" uib-collapse="!currentUsers.length > 0">
+    <div class="col-sm-4">
+      <div class="center-el">
+        <div class="btn-group nav-leader-toggle-power">
+          <button class="btn btn-primary" ng-model="leaderSelected" ng-hide="!params.leader && params.leaderChosen" ng-click="setLeader(data.name)" uib-btn-radio="'leader'" uncheckable>I'm the leader!</button>
+          <button class="btn btn-primary" ng-model="leaderSelected" ng-hide="!params.leader && params.leaderChosen" ng-click="resetLeader()" uib-btn-radio="'giveUpPower'" uncheckable>Give up your power</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-offset-3 col-sm-5">
+      <div class="center-el">
+        <div class="btn-group nav-people-list" uib-dropdown>
+          <button class="btn" ng-class="params.leader ? 'btn-success' : 'btn-primary'" ng-click="addUser(data.name);"><i class="fa fa-refresh"></i></button>
+          <button type="button" class="btn" ng-class="params.leader ? 'btn-success' : 'btn-primary'" uib-dropdown-toggle>
+            <span ng-show="params.leader">Leader: </span>
+            {{currentUsers.length}} People Estimating 
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+            <li ng-repeat="user in currentUsers" ng-class="{'label-success': user == params.currentLeader}">
+              <a>
+                <span ng-show="user == params.currentLeader">
+                  Leader:
+                </span>
+                {{user}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div><!--  /display users & give up power -->
+
+  <div class="container"><!-- main container -->
+
+    <div class="row banner">
+      <div class="col-sm-12">
+        <h1 class="text-center">
+          <i class="fa fa-align-right"></i>
+          JRS Plays Lotto
+          <i class="fa fa-align-left"></i>
+        </h1>
+      </div>
+    </div>
+
+    <!-- set task, select scale -->
+    <div class="leader-section well-style" uib-collapse="!params.leader">
+      <div class="row custom-scale-select">
+        <div class="col-sm-offset-6 col-sm-6">
+          <div class="center-el">
+            <div class="btn-group scale-selector">
+              <button class="btn btn-default cursor-default" ng-model="params.scaleselection" uib-btn-radio disabled>
+                Scale:
+              </button>
+              <button class="btn btn-warning" ng-model="params.scaleselection" uib-btn-radio="'default'" ng-click="changeCards(cards); showCustomScaleInput(false);">
+                Default
+              </button>
+              <button class="btn btn-warning" ng-model="params.scaleselection" uib-btn-radio="'fibonacci'" ng-click="changeCards(fibonacci); showCustomScaleInput(false);">
+                Fibonacci
+              </button>
+              <button class="btn btn-warning" ng-model="params.scaleselection" uib-btn-radio="'custom'" ng-click="showCustomScaleInput(true);">
+                Custom
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-offset-1 col-sm-10">
+          <div class="well">
+            <div class="form-group">
+              <label>
+                Enter a New Task: 
+              </label>
+              <textarea rows="5" class="form-control the-text" ng-model="newtask"></textarea>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-info" ng-click="changeTask(newtask); deleteCards(); toggle(true);" ng-disabled="newtask == null">
+                Present Task
+              </button>
+              <button class="btn btn-warning" ng-click="deleteCards(); toggle(true); newtask = null; params.currentTask = 'None';">
+                Clear Task
+              </button>
+            </div>
+            <button class="btn btn-success pull-right" ng-click="toggle(false)">
+              Reveal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /set task, select scale -->
+
+    <!-- enter custom scale -->
+    <div class="row well-style" uib-collapse="!params.scaleChoice">
+      <div class="col-sm-offset-3 col-sm-6 well">        
+        <div class="form-group">
+          <label>Enter your custom scale</label>
+          <input name="customscale" type="text"  class="form-control" required ng-model="data.customscale" />
+        </div>
+        <p>
+          Separate each choice with commas 
+          <em>
+            (ex: <strong>1,2,3</strong> or <strong>5, 10, 20</strong>)
+          </em>
+        </p>
+        <div class="text-center">
+          <div class="btn-group">
+            <button type="button" class="btn btn-success" ng-click="changeCards(data.customscale)" ng-disabled="data.customscale == null">
+                Submit new scale
+            </button>
+            <button type="button" class="btn btn-warning" ng-click="changeCards(cards); scaleMessage = 'Default scale set'">
+                Default scale
+            </button>
+          </div>
+        </div>
+        <h3 class="text-center" ng-show="scaleMessage">
+          {{scaleMessage}}   
+        </h3>        
+      </div>
+    </div><!-- /enter custom scale -->
+
+    <!-- enter name and select leader -->
+    <div class="row name-section well-style" uib-collapse="userSet == true">
+      <div class="col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6">
+        <h3 ng-hide="data.name" class="text-center">Welcome!</h3>
+        <h3 ng-show="data.name" class="text-center">Welcome, {{data.name}}!</h3>
+        <form name="userForm" novalidate>
+          <div class="input-group">
+            <input type="text" class="form-control" ng-model="data.name" placeholder="Name">
+            <span class="input-group-btn">
+              <button class="btn btn-info" ng-click="addUser(data.name); userSet = true;" ng-disabled="data.name == null" ng-class="{'last-btn-in-group': (!params.leader && params.leaderChosen) }">
+               I'm here!
+              </button>
+              <button class="btn btn-success" ng-click="addUser(data.name); userSet = true; setLeader(data.name); leaderSelected = 'leader' " ng-hide="!params.leader && params.leaderChosen" ng-disabled="data.name == null">
+               I'm the leader!
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div><!-- /enter name and select leader -->
+
+    <!-- card reveal -->
+    <div class="row voting-results well-style" uib-collapse="!cardchoices.length > 0">
+      <div class="col-sm-2 text-center" ng-repeat="choice in cardchoices">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h4 class="panel-title">{{choice.name}}</h4>
+          </div>
+          <div class="panel-body" ng-hide="params.toggleStart">
+            <h3 class="">{{choice.card}}</h3>
+          </div>
+        </div>
+      </div>
+    </div><!-- /card reveal -->
+
+    <!-- voting -->
+    <div class="voting-section well-style" uib-collapse="params.currentTask == 'None'">
+      <!-- tile-scale -->      
+      <div class="row" ng-show="scaleOption.tile">  
+        <div class="text-center tile-scale">
+          <div class="btn-group">
+            <button class="btn btn-default" ng-repeat="val in cardoptions track by $index" ng-model="$parent.data.card" uib-btn-radio="{{val}}">
+              {{val}}
+            </button>
+            <span class="input-group-btn">
+              <button class="btn btn-default" ng-model="data.card" uib-btn-radio="'coffee'">
+                <i class="fa fa-coffee"></i>
+              </button>
+              <button class="btn btn-default" ng-model="data.card" uib-btn-radio="'beer'">
+                <i class="fa fa-beer"></i>
+              </button>
+              <button class="btn btn-success" ng-click="createCard(data);" ng-disabled="showMessage || userForm.$invalid">
+                Submit
+              </button>
+            </span>
+          </div>
+        </div>
+      </div><!-- tile-scale -->
+      <!-- slider-scale -->
+      <div class="row" ng-show="scaleOption.slider">
+        <div class="col-sm-offset-3 col-sm-6 text-center slider-scale">
+          <input type="range" max="{{cardoptions.length -1}}" ng-model="params.sliderKey">
+        </div>
+      </div><!-- slider-scale -->
+      <!-- input-scale -->
+      <div class="row" ng-show="scaleOption.input">
+        <div class="col-sm-offset-5 col-sm-2 input-scale">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" ng-click="inputClickScale('sub')" ng-disabled="params.sliderKey == 0">
+                <i class="fa fa-minus"></i>
+              </button>
+            </span>
+            <input type="text" class="form-control" ng-model="cardoptions[params.sliderKey]">
+            <span class="input-group-btn">
+              <button class="btn btn-primary" ng-click="inputClickScale('add')" ng-disabled="cardoptions.length == params.sliderKey +1">
+                <i class="fa fa-plus"></i>
+              </button>
+            </span>
+          </div>
+          <button class="btn btn-success input-scale-submit" ng-click="createCardOnlyVote(data, cardoptions[params.sliderKey]);" ng-disabled="showMessage || userForm.$invalid">Submit</button>
+        </div>
+      </div><!-- input-scale -->
+
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">The task being evaluated</h3>
+            </div>
+            <div class="panel-body" ng-bind-html="params.currentTask | keepNewLine"></div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <h3 class="well">
+            You've selected: {{data.card || "..."}}
+          </h3>
+          <h3 class="well" ng-show="params.toggleStart">
+            <div class="row">
+              <div class="col-sm-9">                
+                Progress...
+              </div>
+              <div class="col-sm-3">
+                <div class="label label-primary pull-right">
+                  {{ cardchoices.length }} Votes
+                </div>
+              </div>
+            </div>
+          </h3>
+          <h3 class="well" ng-hide="params.toggleStart">
+            Average Estimate: {{ params.cardAvg | number:2 }}
+          </h3>
+        </div>
+      </div>
+    </div><!-- /voting -->
+
+  </div><!-- /main container -->
+
+  <footer class="footer">    
+    <a href="{{plays.link}}" target="_blank">
+      <img ng-src="{{plays.logoSrc}}" alt="{{plays.logoAlt}}">
+    </a>    
+  </footer>
+
+</body>
+</html>
