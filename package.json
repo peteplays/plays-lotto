@@ -29,5 +29,10 @@
     "dev": "node server.js",
     "prestart": "gulp build",
     "start": "node server.js"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peteplays/plays-lotto"
+  },
+  "license": "MIT"
 }
