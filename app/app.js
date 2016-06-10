@@ -6,7 +6,7 @@ var app = angular.module('playsLotto', [
     'ui.bootstrap',
     'ngAnimate'
 ])
-.factory('socket', require('./js/socketservice.js'))
+.factory('socket', require('./js/socketService.js'))
 .controller('main', require('./js/main.js'))
 .filter('keepNewLine', require('./js/keepNewLines.js'))
 ;

@@ -43,7 +43,7 @@ Open multiple tabs to see how multiple users can submit their estimations and vi
 |   ├───┬ js/
 |   |   ├── keepNewLines.js
 |   |   ├── main.js
-|   |   └── socketservice.js
+|   |   └── socketService.js
 |   ├── app.js
 |   └── app.less
 ├───┬ resources/

@@ -8,17 +8,17 @@ var app = angular.module('playsLotto', [
     'ui.bootstrap',
     'ngAnimate'
 ])
-.factory('socket', require('./js/socketservice.js'))
+.factory('socket', require('./js/socketService.js'))
 .controller('main', require('./js/main.js'))
 .filter('keepNewLine', require('./js/keepNewLines.js'))
 ;
-}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_3b46ebcf.js","/")
-},{"./js/keepNewLines.js":2,"./js/main.js":3,"./js/socketservice.js":4,"angular-animate/angular-animate.min":5,"angular-ui-bootstrap/dist/ui-bootstrap-tpls":6,"angular/angular.min":7,"buffer":9,"pBGvAp":11}],2:[function(require,module,exports){
+}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_419673d8.js","/")
+},{"./js/keepNewLines.js":2,"./js/main.js":3,"./js/socketService.js":4,"angular-animate/angular-animate.min":5,"angular-ui-bootstrap/dist/ui-bootstrap-tpls":6,"angular/angular.min":7,"buffer":9,"pBGvAp":11}],2:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // @ngInject
 module.exports = ['$sce', function ($sce) {
-	 return function(val) {
-        return $sce.trustAsHtml(val.replace(/\n/g, "<br>"));
+	return function(val) {
+    	return $sce.trustAsHtml(val.replace(/\n/g, "<br>"));
     };
 }];
 
@@ -267,7 +267,7 @@ module.exports = ['$rootScope', function($rootScope) {
         }
     };
 }];
-}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/socketservice.js","/js")
+}).call(this,require("pBGvAp"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/socketService.js","/js")
 },{"buffer":9,"pBGvAp":11}],5:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*
