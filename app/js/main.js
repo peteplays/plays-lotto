@@ -1,21 +1,22 @@
 //@ngInject
 var _ = require('underscore');
 module.exports = ['$scope', '$window','socket', function($scope, $window, socket) {
-   
-  $scope.cardoptions = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 34, 55, 89, 144];
+
+  var cards = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 34, 55, 89, 144];
+  $scope.cardoptions = cards;
   $scope.fibonacci = '0, 0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144';
   $scope.cardchoices = [];
   $scope.currentUsers = [];
   $scope.params = {
     toggleStart: true,
-    scaleChoice: false,   
+    scaleChoice: false,
     leader: false,
     leaderChosen: false,
     cardAvg: 0.0,
-    sliderKey: 0,  
-    currentTask: 'None',  
+    sliderKey: 0,
+    currentTask: 'None',
     scaleSelection: 'default',
-    currentLeader: ''   
+    currentLeader: ''
   };
   $scope.plays = {
     link: 'http://peteplays.com/',
@@ -23,7 +24,7 @@ module.exports = ['$scope', '$window','socket', function($scope, $window, socket
     logoAlt: 'PetePlays'
   };
 
-  var screenWidth = function (sw) {    
+  var screenWidth = function (sw) {
     if ( sw > 992 ){
       return 'max';
     } else if ( sw <= 993 && sw > 768 ) {
@@ -39,7 +40,7 @@ module.exports = ['$scope', '$window','socket', function($scope, $window, socket
 
   var showScale = function (sw) {
     if ( ( $scope.params.scaleSelection != 'fibonacci' && sw == 'max' ) ||
-         ( $scope.params.scaleSelection == 'fibonacci' && (sw == 'max' || sw == 'lg' || sw == 'md') ) ) {      
+         ( $scope.params.scaleSelection == 'fibonacci' && (sw == 'max' || sw == 'lg' || sw == 'md') ) ) {
       $scope.scaleOption = {
         tile: true,
         slider: false,
@@ -111,7 +112,7 @@ module.exports = ['$scope', '$window','socket', function($scope, $window, socket
   };
 
   $scope.createCardOnlyVote = function (data, val) {
-    _.extend(data, { card: val }); 
+    _.extend(data, { card: val });
     $scope.createCard(data);
   };
 
@@ -190,12 +191,12 @@ module.exports = ['$scope', '$window','socket', function($scope, $window, socket
       });
       $scope.scaleMessage = 'Scale Changed Successfully';
       return cardarray;
-    } else if (!_.isUndefined(data) && data === $scope.cardoptions) {
+    } else if (!_.isUndefined(data) && data === cards) {
       $scope.scaleMessage = 'Using Default Scale';
-      return $scope.cardoptions;
+      return cards;
     } else {
       $scope.scaleMessage = 'Invalid Entry';
-      return $scope.cardoptions;
+      return cards;
     }
   };
 
@@ -210,6 +211,6 @@ module.exports = ['$scope', '$window','socket', function($scope, $window, socket
 
   $window.onresize = function () { setWindowWidth(); $scope.$apply(); };
 
-  setWindowWidth();  
+  setWindowWidth();
 
 }];
