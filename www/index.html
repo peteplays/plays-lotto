@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  
+
   <title>Plays Lotto</title>
 
   <link rel="stylesheet" href="css/bundle.min.css">
@@ -21,7 +21,7 @@
   </script>
 </head>
 <body ng-controller="main">
- 
+
   <!--  display users & give up power -->
   <div class="row current-users" uib-collapse="!currentUsers.length > 0">
     <div class="col-sm-4">
@@ -38,7 +38,7 @@
           <button class="btn" ng-class="params.leader ? 'btn-success' : 'btn-primary'" ng-click="addUser(data.name);"><i class="fa fa-refresh"></i></button>
           <button type="button" class="btn" ng-class="params.leader ? 'btn-success' : 'btn-primary'" uib-dropdown-toggle>
             <span ng-show="params.leader">Leader: </span>
-            {{currentUsers.length}} People Estimating 
+            {{currentUsers.length}} People Estimating
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" uib-dropdown-menu role="menu">
@@ -95,7 +95,7 @@
           <div class="well">
             <div class="form-group">
               <label>
-                Enter a New Task: 
+                Enter a New Task:
               </label>
               <textarea rows="5" class="form-control the-text" ng-model="newtask"></textarea>
             </div>
@@ -117,13 +117,13 @@
 
     <!-- enter custom scale -->
     <div class="row well-style" uib-collapse="!params.scaleChoice">
-      <div class="col-sm-offset-3 col-sm-6 well">        
+      <div class="col-sm-offset-3 col-sm-6 well">
         <div class="form-group">
           <label>Enter your custom scale</label>
           <input name="customscale" type="text"  class="form-control" required ng-model="data.customscale" />
         </div>
         <p>
-          Separate each choice with commas 
+          Separate each choice with commas
           <em>
             (ex: <strong>1,2,3</strong> or <strong>5, 10, 20</strong>)
           </em>
@@ -139,8 +139,8 @@
           </div>
         </div>
         <h3 class="text-center" ng-show="scaleMessage">
-          {{scaleMessage}}   
-        </h3>        
+          {{scaleMessage}}
+        </h3>
       </div>
     </div><!-- /enter custom scale -->
 
@@ -181,8 +181,8 @@
 
     <!-- voting -->
     <div class="voting-section well-style" uib-collapse="params.currentTask == 'None'">
-      <!-- tile-scale -->      
-      <div class="row" ng-show="scaleOption.tile">  
+      <!-- tile-scale -->
+      <div class="row" ng-show="scaleOption.tile">
         <div class="text-center tile-scale">
           <div class="btn-group">
             <button class="btn btn-default" ng-repeat="val in cardoptions track by $index" ng-model="$parent.data.card" uib-btn-radio="{{val}}">
@@ -243,7 +243,7 @@
           </h3>
           <h3 class="well" ng-show="params.toggleStart">
             <div class="row">
-              <div class="col-sm-9">                
+              <div class="col-sm-9">
                 Progress...
               </div>
               <div class="col-sm-3">
@@ -262,10 +262,10 @@
 
   </div><!-- /main container -->
 
-  <footer class="footer">    
+  <footer class="footer">
     <a href="{{plays.link}}" target="_blank">
       <img ng-src="{{plays.logoSrc}}" alt="{{plays.logoAlt}}">
-    </a>    
+    </a>
   </footer>
 
 </body>
